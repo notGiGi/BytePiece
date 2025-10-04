@@ -1,0 +1,18 @@
+﻿Hello world!
+This is a sample corpus for training a tokenizer.
+BytePiece makes tokenization educational and transparent.
+We can handle Unicode: 你好世界 🚀
+Multiple languages work too: Hola mundo, Bonjour le monde.
+The algorithm learns common patterns through byte pair encoding.
+Frequent pairs get merged first.
+This creates a vocabulary of subword units.
+Hello world appears multiple times.
+Common words like "the" become single tokens.
+Rare words split into smaller pieces.
+This is efficient for neural networks.
+Tokenization is the first step in NLP.
+Good tokenizers improve model performance.
+BytePiece aims to be educational first.
+Understanding tokenization deeply matters.
+From characters to subwords to words.
+The spectrum of granularity.

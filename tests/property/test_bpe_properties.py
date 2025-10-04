@@ -1,4 +1,4 @@
-﻿"""BytePiece command-line interface."""
+"""BytePiece command-line interface."""
 
 from pathlib import Path
 from typing import Optional
