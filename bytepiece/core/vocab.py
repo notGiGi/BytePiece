@@ -150,21 +150,10 @@ class Vocabulary:
     
     @classmethod
     def from_dict(cls, config: dict) -> "Vocabulary":
-        """Create vocabulary from dict.
-        
-        Args:
-            config: Dictionary with vocab data
-            
-        Returns:
-            Vocabulary instance
-        """
         vocab = cls(byte_fallback=config["byte_fallback"])
-        
-        # Add tokens (skipping byte tokens if they're already there)
         start_idx = 256 if vocab.byte_fallback else 0
         for token in config["tokens"][start_idx:]:
             vocab.add_token(token)
-        
         return vocab
 
 
@@ -172,19 +161,12 @@ class MergeRules:
     """Manages BPE merge rules with deterministic ordering."""
     
     def __init__(self):
-        """Initialize empty merge rules."""
         self.merges: List[Tuple[str, str]] = []
         self.merge_ranks: Dict[Tuple[str, str], int] = {}
     
     def add_merge(self, pair: Tuple[str, str], rank: Optional[int] = None) -> None:
-        """Add a merge rule.
-        
-        Args:
-            pair: Pair of tokens to merge (left, right)
-            rank: Optional explicit rank (defaults to current length)
-        """
         if pair in self.merge_ranks:
-            return  # Already exists
+            return  
         
         if rank is None:
             rank = len(self.merges)
@@ -193,40 +175,19 @@ class MergeRules:
         self.merge_ranks[pair] = rank
     
     def get_rank(self, pair: Tuple[str, str]) -> Optional[int]:
-        """Get rank for a merge pair.
-        
-        Args:
-            pair: Token pair
-            
-        Returns:
-            Rank or None if pair not in merges
-        """
         return self.merge_ranks.get(pair)
     
     def __len__(self) -> int:
-        """Return number of merge rules."""
+
         return len(self.merges)
     
     def to_dict(self) -> dict:
-        """Serialize merge rules to dict.
-        
-        Returns:
-            Dictionary with merge data
-        """
         return {
             "merges": [[left, right] for left, right in self.merges],
         }
     
     @classmethod
     def from_dict(cls, config: dict) -> "MergeRules":
-        """Create merge rules from dict.
-        
-        Args:
-            config: Dictionary with merge data
-            
-        Returns:
-            MergeRules instance
-        """
         rules = cls()
         for rank, (left, right) in enumerate(config["merges"]):
             rules.add_merge((left, right), rank)

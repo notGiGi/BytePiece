@@ -1,6 +1,4 @@
-﻿"""Byte Pair Encoding (BPE) algorithm implementation."""
-
-from collections import Counter, defaultdict
+﻿from collections import Counter, defaultdict
 from typing import Dict, List, Optional, Set, Tuple
 
 from bytepiece.core.normalizer import Normalizer
@@ -29,21 +27,17 @@ def train_bpe(
     if normalizer is None:
         normalizer = Normalizer()
     
-    # Initialize vocabulary with byte tokens if enabled
     vocab = Vocabulary(byte_fallback=byte_fallback)
     merge_rules = MergeRules()
     
-    # Normalize all texts
     normalized_texts = [normalizer.normalize(text) for text in texts]
-    
-    # Initialize: split into characters with byte-fallback
+
     word_freqs: Dict[Tuple[str, ...], int] = Counter()
     for text in normalized_texts:
-        # Convert to character-level tokens with byte-fallback
         tokens = tuple(vocab.encode_with_fallback(text))
         word_freqs[tokens] += 1
     
-    # Add all unique characters to vocabulary
+
     all_chars = set()
     for word_tuple in word_freqs:
         all_chars.update(word_tuple)
@@ -53,7 +47,7 @@ def train_bpe(
         print(f"Initial vocab size: {len(vocab)}")
         print(f"Unique words: {len(word_freqs)}")
     
-    # Calculate how many merges we need
+
     base_size = len(vocab)
     num_merges = vocab_size - base_size
     
@@ -62,9 +56,8 @@ def train_bpe(
             print(f"Target vocab size {vocab_size} already reached with base tokens")
         return vocab, merge_rules, normalizer
     
-    # Iteratively merge most frequent pairs
     for merge_idx in range(num_merges):
-        # Count all adjacent pairs
+        
         pair_freqs: Counter[Tuple[str, str]] = Counter()
         
         for word_tuple, freq in word_freqs.items():
