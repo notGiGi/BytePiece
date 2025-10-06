@@ -70,16 +70,14 @@ def train_bpe(
                 print(f"No more pairs to merge at iteration {merge_idx}")
             break
         
-        # Find most frequent pair
         best_pair, best_freq = pair_freqs.most_common(1)[0]
-        
+        #We do not have a tie breaker, and for now, we dont need one
         if verbose and merge_idx % 100 == 0:
             print(f"Merge {merge_idx}/{num_merges}: {best_pair} (freq={best_freq})")
         
-        # Add merge rule
         merge_rules.add_merge(best_pair)
         
-        # Create new token from pair
+        # Create new token from the most common pair
         new_token = best_pair[0] + best_pair[1]
         vocab.add_token(new_token)
         
@@ -117,16 +115,13 @@ def _apply_merge(
     new_word = []
     i = 0
     while i < len(word):
-        # Check if we can merge at current position
+    
         if i < len(word) - 1 and (word[i], word[i + 1]) == pair:
-            # Merge the pair
             new_word.append(word[i] + word[i + 1])
             i += 2
         else:
-            # Keep token as-is
             new_word.append(word[i])
             i += 1
-    
     return tuple(new_word)
 
 
@@ -159,15 +154,14 @@ class BPEEncoder:
         Returns:
             List of token strings
         """
-        # Normalize text
+    
         normalized = self.normalizer.normalize(text)
         
-        # Start with character-level tokens (with byte-fallback)
+   
         tokens = self.vocab.encode_with_fallback(normalized)
         
-        # Apply merges in order until no more merges possible
+    
         while True:
-            # Find the earliest merge that can be applied
             best_merge = None
             best_rank = float('inf')
             best_pos = -1
@@ -175,16 +169,12 @@ class BPEEncoder:
             for i in range(len(tokens) - 1):
                 pair = (tokens[i], tokens[i + 1])
                 rank = self.merge_rules.get_rank(pair)
-                
                 if rank is not None and rank < best_rank:
                     best_merge = pair
                     best_rank = rank
                     best_pos = i
-            
             if best_merge is None:
-                break  # No more merges possible
-            
-            # Apply the merge
+                break  
             tokens = (
                 tokens[:best_pos] +
                 [tokens[best_pos] + tokens[best_pos + 1]] +
