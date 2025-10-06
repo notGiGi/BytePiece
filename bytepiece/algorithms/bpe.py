@@ -126,7 +126,6 @@ def _apply_merge(
 
 
 class BPEEncoder:
-    """Encodes text using trained BPE model."""
     
     def __init__(
         self,
@@ -184,14 +183,6 @@ class BPEEncoder:
         return tokens
     
     def encode_batch(self, texts: List[str]) -> List[List[str]]:
-        """Encode multiple texts.
-        
-        Args:
-            texts: List of input texts
-            
-        Returns:
-            List of token lists
-        """
         return [self.encode(text) for text in texts]
     
     def decode(self, tokens: List[str]) -> str:
@@ -232,12 +223,4 @@ class BPEEncoder:
         return text
     
     def decode_batch(self, token_lists: List[List[str]]) -> List[str]:
-        """Decode multiple token sequences.
-        
-        Args:
-            token_lists: List of token lists
-            
-        Returns:
-            List of decoded texts
-        """
         return [self.decode(tokens) for tokens in token_lists]
