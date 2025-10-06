@@ -1,6 +1,4 @@
-﻿"""BytePiece quickstart example."""
-
-import bytepiece
+﻿import bytepiece
 
 def main():
     print("=" * 60)

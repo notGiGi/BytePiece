@@ -1,12 +1,9 @@
-﻿"""Unicode normalization and text preprocessing."""
-
-import unicodedata
+﻿import unicodedata
 from enum import Enum
 from typing import Optional
 
 
 class NormalizationMode(str, Enum):
-    """Supported Unicode normalization modes."""
     
     NONE = "none"
     NFC = "nfc"
@@ -16,16 +13,13 @@ class NormalizationMode(str, Enum):
 
 
 class SpacerMode(str, Enum):
-    """How to handle word boundaries with spacer character."""
-    
+
     PREFIX = "prefix"  # Add ▁ at the start of each word: "▁hello ▁world"
     SEPARATOR = "separator"  # Keep spaces as separate ▁ tokens: "hello ▁ world"
     NONE = "none"  # Don't use spacer at all
 
 
-class Normalizer:
-    """Handles Unicode normalization and spacer insertion for tokenization."""
-    
+class Normalizer:    
     SPACER = "▁"  # U+2581 LOWER ONE EIGHTH BLOCK
     
     def __init__(

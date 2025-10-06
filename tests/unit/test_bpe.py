@@ -1,6 +1,4 @@
-﻿"""Unit tests for BPE algorithm."""
-
-import pytest
+﻿import pytest
 
 from bytepiece import train_bpe, BPEEncoder, Normalizer, NormalizationMode, SpacerMode
 
