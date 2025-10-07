@@ -1,10 +1,13 @@
-﻿"""BytePiece - Educational, production-grade tokenizer implementation."""
-
-__version__ = "0.1.0"
+﻿__version__ = "0.1.0"
 
 from bytepiece.algorithms.bpe import BPEEncoder, train_bpe
 from bytepiece.core.io import get_model_info, load_model, save_model
-from bytepiece.core.normalizer import Normalizer, NormalizationMode, SpacerMode
+from bytepiece.core.normalizer import (
+    Normalizer,
+    NormalizationMode,
+    PreTokenizationMode,  
+    SpacerMode,
+)
 from bytepiece.core.vocab import MergeRules, Vocabulary
 
 __all__ = [
@@ -19,6 +22,7 @@ __all__ = [
     "Normalizer",
     "NormalizationMode",
     "SpacerMode",
+    "PreTokenizationMode", 
     "Vocabulary",
     "MergeRules",
     # Metadata
