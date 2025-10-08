@@ -5,10 +5,10 @@ from bytepiece.core.io import get_model_info, load_model, save_model
 from bytepiece.core.normalizer import (
     Normalizer,
     NormalizationMode,
-    PreTokenizationMode,  
+    PreTokenizationMode,  # ← NUEVO
     SpacerMode,
 )
-from bytepiece.core.vocab import MergeRules, Vocabulary
+from bytepiece.core.vocab import MergeRules, SpecialTokens, Vocabulary
 
 __all__ = [
     # Main API
@@ -22,9 +22,10 @@ __all__ = [
     "Normalizer",
     "NormalizationMode",
     "SpacerMode",
-    "PreTokenizationMode", 
+    "PreTokenizationMode",
     "Vocabulary",
     "MergeRules",
+    "SpecialTokens",  
     # Metadata
     "__version__",
 ]

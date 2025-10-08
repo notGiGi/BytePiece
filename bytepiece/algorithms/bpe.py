@@ -10,6 +10,7 @@ def train_bpe(
     vocab_size: int,
     normalizer: Optional[Normalizer] = None,
     byte_fallback: bool = True,
+    use_special_tokens: bool = False,
     verbose: bool = False,
 ) -> Tuple[Vocabulary, MergeRules, Normalizer]:
     """Train a BPE tokenizer on a corpus.
@@ -19,6 +20,7 @@ def train_bpe(
         vocab_size: Target vocabulary size
         normalizer: Text normalizer (creates default if None)
         byte_fallback: Enable byte-fallback for full coverage
+        use_special_tokens: Add special tokens (PAD, UNK, BOS, EOS)
         verbose: Print training progress
         
     Returns:
@@ -27,29 +29,22 @@ def train_bpe(
     if normalizer is None:
         normalizer = Normalizer()
     
-    vocab = Vocabulary(byte_fallback=byte_fallback)
+    vocab = Vocabulary(byte_fallback=byte_fallback, use_special_tokens=use_special_tokens)
     merge_rules = MergeRules()
     
-
     word_freqs: Dict[Tuple[str, ...], int] = Counter()
     
     for text in texts:
-      
         chunks = normalizer.pre_tokenize(text)
         
-     
         for chunk in chunks:
-      
+
             normalized_chunk = normalizer.normalize(chunk)
             
-          
             tokens = tuple(vocab.encode_with_fallback(normalized_chunk))
             
-
             word_freqs[tokens] += 1
     
-
- 
     all_chars = set()
     for word_tuple in word_freqs:
         all_chars.update(word_tuple)
@@ -59,7 +54,7 @@ def train_bpe(
         print(f"Initial vocab size: {len(vocab)}")
         print(f"Unique token sequences (chunks): {len(word_freqs)}")
     
-  
+
     base_size = len(vocab)
     num_merges = vocab_size - base_size
     
@@ -67,9 +62,10 @@ def train_bpe(
         if verbose:
             print(f"Target vocab size {vocab_size} already reached with base tokens")
         return vocab, merge_rules, normalizer
- 
+    
+
     for merge_idx in range(num_merges):
-  
+
         pair_freqs: Counter[Tuple[str, str]] = Counter()
         
         for word_tuple, freq in word_freqs.items():
@@ -82,19 +78,16 @@ def train_bpe(
                 print(f"No more pairs to merge at iteration {merge_idx}")
             break
         
-     
         best_pair, best_freq = pair_freqs.most_common(1)[0]
         
         if verbose and merge_idx % 100 == 0:
             print(f"Merge {merge_idx}/{num_merges}: {best_pair} (freq={best_freq})")
-      
+        
         merge_rules.add_merge(best_pair)
         
-     
         new_token = best_pair[0] + best_pair[1]
         vocab.add_token(new_token)
         
-       
         new_word_freqs: Dict[Tuple[str, ...], int] = {}
         for word_tuple, freq in word_freqs.items():
             new_word = _apply_merge(word_tuple, best_pair)
@@ -121,13 +114,13 @@ def _apply_merge(
     i = 0
     
     while i < len(word):
-      
+ 
         if i < len(word) - 1 and (word[i], word[i + 1]) == pair:
-           
+         
             new_word.append(word[i] + word[i + 1])
             i += 2
         else:
-       
+
             new_word.append(word[i])
             i += 1
     
@@ -136,7 +129,6 @@ def _apply_merge(
 
 class BPEEncoder:
 
-    
     def __init__(
         self,
         vocab: Vocabulary,
@@ -149,20 +141,28 @@ class BPEEncoder:
         self.normalizer = normalizer
     
     def encode(self, text: str) -> List[str]:
+        """Encode text into tokens.
+        
+        Args:
+            text: Input text
+            
+        Returns:
+            List of token strings
+        """
 
         chunks = self.normalizer.pre_tokenize(text)
         
         all_tokens = []
         
-   
+ 
         for chunk in chunks:
-          
+
             normalized = self.normalizer.normalize(chunk)
             
-         
+
             tokens = list(self.vocab.encode_with_fallback(normalized))
             
-        
+  
             tokens = self._apply_merges(tokens)
             
             all_tokens.extend(tokens)
@@ -174,9 +174,9 @@ class BPEEncoder:
         if len(tokens) < 2:
             return tokens
         
-      
+
         while True:
-       
+
             best_merge = None
             best_rank = float('inf')
             best_pos = -1
@@ -191,10 +191,10 @@ class BPEEncoder:
                     best_pos = i
             
             if best_merge is None:
-              
+                
                 break
             
-          
+           
             tokens = (
                 tokens[:best_pos] +
                 [tokens[best_pos] + tokens[best_pos + 1]] +
@@ -207,7 +207,7 @@ class BPEEncoder:
 
         text = ''.join(tokens)
         
-       
+    
         text = self.vocab.decode_bytes(text)
         
      
