@@ -1,6 +1,4 @@
-﻿"""BytePiece command-line interface."""
-
-from pathlib import Path
+﻿from pathlib import Path
 from typing import Optional
 
 import typer
@@ -8,7 +6,7 @@ from rich.console import Console
 from rich.table import Table
 
 import bytepiece
-from bytepiece.core.normalizer import NormalizationMode, SpacerMode
+from bytepiece.core.normalizer import NormalizationMode, PreTokenizationMode, SpacerMode
 
 app = typer.Typer(
     name="bytepiece",
@@ -29,11 +27,38 @@ def train(
     spacer_mode: SpacerMode = typer.Option(
         SpacerMode.PREFIX, "--spacer", "-s", help="Spacer mode for word boundaries"
     ),
+    pre_tokenization: PreTokenizationMode = typer.Option(
+        PreTokenizationMode.NONE, 
+        "--pre-tokenization", 
+        "-p", 
+        help="Pre-tokenization strategy (none/whitespace/gpt2)"
+    ),
     byte_fallback: bool = typer.Option(True, "--byte-fallback/--no-byte-fallback", help="Enable byte-fallback"),
     lowercase: bool = typer.Option(False, "--lowercase", help="Convert to lowercase"),
     verbose: bool = typer.Option(False, "--verbose", help="Print training progress"),
 ):
-    """Train a BPE tokenizer on a corpus."""
+    """Train a BPE tokenizer on a corpus.
+    
+    Examples:
+    
+        # Train with default settings
+        bytepiece train corpus.txt model.json
+        
+        # Train with GPT-2 style pre-tokenization (recommended)
+        bytepiece train corpus.txt model.json --pre-tokenization gpt2
+        
+        # Train with custom vocab size and lowercasing
+        bytepiece train corpus.txt model.json -v 5000 --lowercase
+        
+        # Train with all options
+        bytepiece train corpus.txt model.json \\
+            --vocab-size 10000 \\
+            --pre-tokenization gpt2 \\
+            --normalization nfkc \\
+            --spacer prefix \\
+            --lowercase \\
+            --verbose
+    """
     console.print(f"[bold blue]Training BPE tokenizer...[/bold blue]")
     console.print(f"Corpus: {corpus}")
     console.print(f"Target vocab size: {vocab_size}")
@@ -48,14 +73,24 @@ def train(
     
     console.print(f"Loaded {len(texts)} lines from corpus")
     
-    # Create normalizer
+    
     normalizer = bytepiece.Normalizer(
         normalization=normalization,
         spacer_mode=spacer_mode,
         lowercase=lowercase,
+        pre_tokenization=pre_tokenization,  
     )
     
+    # Display configuration
+    console.print("\n[bold]Configuration:[/bold]")
+    console.print(f"  Normalization: {normalization.value}")
+    console.print(f"  Spacer mode: {spacer_mode.value}")
+    console.print(f"  Pre-tokenization: {pre_tokenization.value}")  
+    console.print(f"  Lowercase: {lowercase}")
+    console.print(f"  Byte fallback: {byte_fallback}")
+    
     # Train model
+    console.print("\n[bold]Training...[/bold]")
     vocab, merge_rules, normalizer = bytepiece.train_bpe(
         texts=texts,
         vocab_size=vocab_size,
@@ -78,7 +113,7 @@ def train(
     }
     bytepiece.save_model(encoder, str(output), metadata=metadata)
     
-    console.print(f"[bold green]✓[/bold green] Model saved to {output}")
+    console.print(f"\n[bold green]✓[/bold green] Model saved to {output}")
     console.print(f"Final vocab size: {len(vocab)}")
     console.print(f"Num merges: {len(merge_rules)}")
 
@@ -89,7 +124,16 @@ def apply(
     input_file: Optional[Path] = typer.Option(None, "--input", "-i", help="Input file (stdin if not specified)"),
     output_file: Optional[Path] = typer.Option(None, "--output", "-o", help="Output file (stdout if not specified)"),
 ):
-    """Apply tokenizer to text."""
+    """Apply tokenizer to text.
+    
+    Examples:
+    
+        # Tokenize from stdin
+        echo "Hello world" | bytepiece apply model.json
+        
+        # Tokenize from file
+        bytepiece apply model.json -i input.txt -o output.txt
+    """
     # Load model
     if not model.exists():
         console.print(f"[bold red]Error: Model file not found: {model}[/bold red]")
@@ -124,7 +168,16 @@ def inspect(
     model: Path = typer.Argument(..., help="Path to trained model"),
     top_merges: int = typer.Option(20, "--top-merges", help="Number of top merges to show"),
 ):
-    """Inspect model configuration and vocabulary."""
+    """Inspect model configuration and vocabulary.
+    
+    Examples:
+    
+        # Inspect model with default settings
+        bytepiece inspect model.json
+        
+        # Show top 50 merges
+        bytepiece inspect model.json --top-merges 50
+    """
     if not model.exists():
         console.print(f"[bold red]Error: Model file not found: {model}[/bold red]")
         raise typer.Exit(1)
@@ -147,6 +200,7 @@ def inspect(
     norm = info['normalizer']
     console.print(f"Normalization: {norm['normalization']}")
     console.print(f"Spacer mode: {norm['spacer_mode']}")
+    console.print(f"Pre-tokenization: {norm.get('pre_tokenization', 'none')}")  # ← NUEVO
     console.print(f"Lowercase: {norm.get('lowercase', False)}")
     
     # Display top merges
@@ -170,7 +224,12 @@ def explain(
     text: str = typer.Argument(..., help="Text to tokenize"),
     model: Path = typer.Argument(..., help="Path to trained model"),
 ):
-    """Show step-by-step tokenization process."""
+    """Show step-by-step tokenization process.
+    
+    Examples:
+    
+        bytepiece explain "Hello world" model.json
+    """
     if not model.exists():
         console.print(f"[bold red]Error: Model file not found: {model}[/bold red]")
         raise typer.Exit(1)
@@ -179,9 +238,15 @@ def explain(
     
     console.print(f"\n[bold]Input text:[/bold] {text}")
     
+    # Show pre-tokenization chunks
+    chunks = encoder.normalizer.pre_tokenize(text)
+    console.print(f"\n[bold]Pre-tokenization chunks:[/bold]")
+    for i, chunk in enumerate(chunks):
+        console.print(f"  {i+1}. '{chunk}'")
+    
     # Normalize
     normalized = encoder.normalizer.normalize(text)
-    console.print(f"[bold]After normalization:[/bold] {normalized}")
+    console.print(f"\n[bold]After normalization:[/bold] {normalized}")
     
     # Initial tokenization
     tokens = encoder.vocab.encode_with_fallback(normalized)
