@@ -1,0 +1,58 @@
+{
+  "Standard BPE": {
+    "name": "Standard BPE",
+    "total_tokens": 768,
+    "total_chars": 2648,
+    "compression_ratio": 0.29003021148036257,
+    "tokens_per_second": 255957.52657926103,
+    "operators_preserved": 3,
+    "operator_rate": 0.3,
+    "keywords_preserved": 13,
+    "keyword_rate": 0.9285714285714286,
+    "unique_tokens": 84,
+    "encode_time": 0.003000497817993164,
+    "train_time": 0.028545618057250977
+  },
+  "Entropy-Only": {
+    "name": "Entropy-Only",
+    "total_tokens": 700,
+    "total_chars": 2648,
+    "compression_ratio": 0.26435045317220546,
+    "tokens_per_second": 155459.74796145293,
+    "operators_preserved": 3,
+    "operator_rate": 0.3,
+    "keywords_preserved": 14,
+    "keyword_rate": 1.0,
+    "unique_tokens": 94,
+    "encode_time": 0.004502773284912109,
+    "train_time": 0.015508413314819336
+  },
+  "Syntax-Only": {
+    "name": "Syntax-Only",
+    "total_tokens": 700,
+    "total_chars": 2648,
+    "compression_ratio": 0.26435045317220546,
+    "tokens_per_second": 18871.402493893816,
+    "operators_preserved": 3,
+    "operator_rate": 0.3,
+    "keywords_preserved": 14,
+    "keyword_rate": 1.0,
+    "unique_tokens": 94,
+    "encode_time": 0.037093162536621094,
+    "train_time": 0.0285646915435791
+  },
+  "Hybrid (Current)": {
+    "name": "Hybrid",
+    "total_tokens": 700,
+    "total_chars": 2648,
+    "compression_ratio": 0.26435045317220546,
+    "tokens_per_second": 233350.24638372278,
+    "operators_preserved": 3,
+    "operator_rate": 0.3,
+    "keywords_preserved": 14,
+    "keyword_rate": 1.0,
+    "unique_tokens": 94,
+    "encode_time": 0.0029997825622558594,
+    "train_time": 0.014014720916748047
+  }
+}

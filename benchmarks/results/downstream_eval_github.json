@@ -1,0 +1,26 @@
+{
+  "corpus_type": "Synthetic",
+  "corpus_size": 300,
+  "results": {
+    "Standard BPE": {
+      "rare_op": 1.0,
+      "semantic_sep": 0.19397329852282164,
+      "long_id": 0.0
+    },
+    "Entropy-Only": {
+      "rare_op": 1.0,
+      "semantic_sep": 0.7333333333333334,
+      "long_id": 0.0
+    },
+    "Syntax-Only": {
+      "rare_op": 0.0,
+      "semantic_sep": 0.6665414623554534,
+      "long_id": 0.0
+    },
+    "Hybrid": {
+      "rare_op": 0.0,
+      "semantic_sep": 0.7287698412698412,
+      "long_id": 0.0
+    }
+  }
+}

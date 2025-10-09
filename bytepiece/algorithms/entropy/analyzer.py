@@ -13,10 +13,10 @@ class EntropyAnalyzer:
     """Calculates Shannon entropy and makes fragmentation decisions"""
     
     def __init__(self, 
-                 default_threshold: float = 4.0,
-                 string_threshold: float = 4.5,
-                 identifier_threshold: float = 3.0,
-                 comment_threshold: float = 3.5):
+                default_threshold: float = 4.0,
+                string_threshold: float = 4.5,
+                identifier_threshold: float = 3.0,
+                comment_threshold: float = 3.5):
         """
         Args:
             default_threshold: Generic threshold for unknown types
@@ -36,8 +36,19 @@ class EntropyAnalyzer:
             'url': re.compile(r'https?://|www\.|\.(com|org|net|io|dev)'),
             'path': re.compile(r'[/\\][\w/\\.-]+|[A-Z]:\\'),
             'error_msg': re.compile(r'Error|Exception|Warning|Invalid|Failed'),
-            'operator': re.compile(r'^(>=|<=|==|!=|->|=>|\+=|-=|\*=|/=|//|<<|>>|\|\||&&)$'),
-            'keyword': re.compile(r'^(def|class|if|else|for|while|return|import|from|try|except|with|as|lambda|yield)$'),
+            'operator': re.compile(
+                r'^(>=|<=|==|!=|->|=>|'        # Comparison and arrow
+                r'\+=|-=|\*=|/=|//=|'          # Arithmetic assignment
+                r'<<=|>>=|&=|\|=|\^=|'         # Bitwise assignment (RARE)
+                r'//|<<|>>|'                    # Bitwise shift
+                r'\*\*|'                        # Power (RARE)
+                r'\|\||&&'                      # Logical
+                r')$'
+            ),
+            'keyword': re.compile(
+                r'^(def|class|if|else|for|while|return|import|from|try|except|'
+                r'with|as|lambda|yield|async|await)$'
+            ),
         }
     
     def shannon_entropy(self, text: str) -> float:

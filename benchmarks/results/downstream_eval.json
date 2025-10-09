@@ -1,0 +1,38 @@
+{
+  "Standard BPE": {
+    "operator_prediction": 1.0,
+    "semantic_similarity": {
+      "avg_similar": 0.9677419354838711,
+      "avg_dissimilar": 0,
+      "separation": 0.9677419354838711
+    },
+    "identifier_recovery": 1.0
+  },
+  "Entropy-Only": {
+    "operator_prediction": 1.0,
+    "semantic_similarity": {
+      "avg_similar": 0.8333333333333335,
+      "avg_dissimilar": 0,
+      "separation": 0.8333333333333335
+    },
+    "identifier_recovery": 1.0
+  },
+  "Syntax-Only": {
+    "operator_prediction": 1.0,
+    "semantic_similarity": {
+      "avg_similar": 0.8888888888888888,
+      "avg_dissimilar": 0,
+      "separation": 0.8888888888888888
+    },
+    "identifier_recovery": 1.0
+  },
+  "Hybrid": {
+    "operator_prediction": 1.0,
+    "semantic_similarity": {
+      "avg_similar": 0.8888888888888888,
+      "avg_dissimilar": 0,
+      "separation": 0.8888888888888888
+    },
+    "identifier_recovery": 1.0
+  }
+}

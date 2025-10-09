@@ -1,0 +1,22 @@
+{
+  "Standard BPE": {
+    "rare_operators": 0.0,
+    "long_identifiers": 0.0,
+    "semantic_separation": 0.026422325231056476
+  },
+  "Entropy-Only": {
+    "rare_operators": 0.2535211267605634,
+    "long_identifiers": 0.07692307692307693,
+    "semantic_separation": 0.28881805297778096
+  },
+  "Syntax-Only": {
+    "rare_operators": 0.823943661971831,
+    "long_identifiers": 0.0,
+    "semantic_separation": 0.09630017182926542
+  },
+  "Hybrid": {
+    "rare_operators": 0.8802816901408451,
+    "long_identifiers": 0.0,
+    "semantic_separation": 0.13999021222648034
+  }
+}

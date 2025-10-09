@@ -37,9 +37,13 @@ class EntropyPreTokenizer:
         self.analyzer = entropy_analyzer
         
         # Basic tokenization patterns (similar to regex in BPE)
+        # IMPORTANT: Longer operators FIRST
         self.token_pattern = re.compile(
             r"""
-            # Python operators (preserve as units)
+            # Rare operators FIRST (longer matches have priority)
+            <<=|>>=|&=|\|=|\^=|//=|  # Bitwise/floor assignment (RARE)
+            \*\*|                      # Power (RARE)
+            # Common operators
             >=|<=|==|!=|->|=>|\+=|-=|\*=|/=|//|<<|>>|\|\||&&|
             # String literals (capture quotes)
             "[^"]*"|'[^']*'|
