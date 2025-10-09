@@ -1,0 +1,6 @@
+﻿datasets/
+models/
+results/raw/*.csv
+!**/.gitkeep
+!results/plots/*.png
+!results/reports/*.md

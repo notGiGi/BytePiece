@@ -1,0 +1,3 @@
+﻿# Benchmark dependencies
+matplotlib>=3.7.0
+pandas>=2.0.0

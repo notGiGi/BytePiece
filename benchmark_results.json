@@ -1,0 +1,49 @@
+{
+  "standard_bpe": {
+    "compression_ratio": 0.22939830987186569,
+    "operator_preservation": 1.0,
+    "keyword_preservation": 1.0,
+    "avg_tokens_per_file": 1048.0,
+    "total_encode_time": 14.996606826782227,
+    "files_per_second": 0.20004525254621883,
+    "train_time": 16.085724353790283,
+    "vocab_size": 5000
+  },
+  "entropy_bpe": {
+    "compression_ratio": 0.1749796480653993,
+    "operator_preservation": 0.6474358974358975,
+    "keyword_preservation": 1.0,
+    "avg_tokens_per_file": 698.3333333333334,
+    "total_encode_time": 0.1705617904663086,
+    "files_per_second": 17.588933557733704,
+    "train_time": 1.3575613498687744,
+    "vocab_size": 1742
+  },
+  "comparison": {
+    "compression_ratio": {
+      "standard": 0.22939830987186569,
+      "entropy": 0.1749796480653993,
+      "improvement": 23.722346444863888
+    },
+    "operator_preservation": {
+      "standard": 1.0,
+      "entropy": 0.6474358974358975,
+      "improvement": -35.256410256410255
+    },
+    "keyword_preservation": {
+      "standard": 1.0,
+      "entropy": 1.0,
+      "improvement": 0.0
+    },
+    "avg_tokens_per_file": {
+      "standard": 1048.0,
+      "entropy": 698.3333333333334,
+      "improvement": 33.36513994910941
+    },
+    "train_time": {
+      "standard": 16.085724353790283,
+      "entropy": 1.3575613498687744,
+      "improvement": 91.56045870232202
+    }
+  }
+}

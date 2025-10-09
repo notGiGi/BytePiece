@@ -1,0 +1,35 @@
+BytePiece Benchmark Summary
+==================================================
+
+bytepiece_none:
+  Files: 50
+  Total chars: 265,255
+  Total tokens: 40,963
+  Avg compression: 0.1686 tok/char
+  Avg throughput: 0.0 MB/s
+  Median latency: 1663.63 ms
+
+bytepiece_gpt2:
+  Files: 50
+  Total chars: 265,255
+  Total tokens: 66,964
+  Avg compression: 0.2546 tok/char
+  Avg throughput: 0.3 MB/s
+  Median latency: 12.50 ms
+
+bytepiece_code:
+  Files: 50
+  Total chars: 265,255
+  Total tokens: 69,997
+  Avg compression: 0.2778 tok/char
+  Avg throughput: 0.1 MB/s
+  Median latency: 49.35 ms
+
+bytepiece_whitespace:
+  Files: 50
+  Total chars: 265,255
+  Total tokens: 124,212
+  Avg compression: 0.4370 tok/char
+  Avg throughput: 0.3 MB/s
+  Median latency: 11.06 ms
+

@@ -1,0 +1,39 @@
+{
+  "vocab": [
+    ":",
+    "calculate",
+    "x",
+    "(",
+    "True",
+    "self",
+    "url",
+    "10",
+    "pass",
+    "200",
+    "return",
+    "process",
+    "status",
+    "Handler",
+    "\"https://api.example.com/users\"",
+    "class",
+    "if",
+    "=",
+    "def",
+    ">=",
+    ")"
+  ],
+  "merges": {},
+  "vocab_size": 200,
+  "stats": {
+    "preserved_tokens": 580,
+    "fragmented_tokens": 0,
+    "total_merges": 0,
+    "training_time": 0.0
+  },
+  "entropy_thresholds": {
+    "default": 4.0,
+    "string": 4.5,
+    "identifier": 3.0,
+    "comment": 3.5
+  }
+}
