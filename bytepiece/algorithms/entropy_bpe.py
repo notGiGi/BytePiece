@@ -77,139 +77,149 @@ class EntropyAwareBPE:
                 i += 1
         return new_word
     
-    def train(self, corpus: List[str], verbose: bool = False) -> Dict:
+    # Agrega estos métodos a tu clase EntropyAwareBPE existente en entropy_bpe.py
+
+    def _control_vocabulary_size(self, preserved_tokens, fragmentable_tokens):
         """
-        Train entropy-aware BPE on a corpus.
+        Control vocabulary explosion by limiting preserved tokens
+        """
+        # Calculate budget
+        max_preserved = int(self.vocab_size * 0.15)  # Max 15% for preserved
         
-        Args:
-            corpus: List of text strings to train on
-            verbose: Print training progress
+        if len(preserved_tokens) > max_preserved:
+            # Sort by importance: operators > keywords > frequent tokens
+            scored_tokens = []
             
-        Returns:
-            Dictionary with training statistics
-        """
+            for token in preserved_tokens:
+                score = 0
+                
+                # Operators get highest priority
+                if token.text in ['>=', '<=', '==', '!=', '//', '**', '+=', '-=']:
+                    score = 1000
+                # Keywords next
+                elif token.text in ['def', 'class', 'if', 'else', 'return', 'import']:
+                    score = 500
+                # Frequency-based for others
+                else:
+                    score = token.frequency if hasattr(token, 'frequency') else 1
+                
+                scored_tokens.append((score, token))
+            
+            # Keep only top tokens
+            scored_tokens.sort(key=lambda x: x[0], reverse=True)
+            preserved_tokens = [t for _, t in scored_tokens[:max_preserved]]
+        
+        return preserved_tokens, fragmentable_tokens
+
+    # En entropy_bpe.py, reemplaza el método train() con este:
+
+    def train(self, corpus: List[str], verbose: bool = False) -> Dict:
+        """Train entropy-aware BPE on a corpus."""
         start_time = time.time()
         
-        if verbose:
-            print("=" * 80)
-            print("ENTROPY-AWARE BPE TRAINING")
-            print("=" * 80)
+        # Pre-tokenize with entropy analysis
+        all_preserved = []
+        all_fragmentable = []
         
-        # Step 1: Pre-tokenize entire corpus with entropy analysis
-        if verbose:
-            print("\n[1/4] Pre-tokenizing corpus with entropy analysis...")
+        for code in corpus:
+            pre_tokens = self.pretokenizer.pretokenize(code)
+            for pt in pre_tokens:
+                if pt.should_fragment:
+                    all_fragmentable.append(pt)
+                else:
+                    all_preserved.append(pt)
         
-        all_pre_tokens = []
-        for text in corpus:
-            all_pre_tokens.extend(self.pretokenizer.pretokenize(text))
-        
-        # Separate preserved vs fragmentable tokens
-        preserved = [pt for pt in all_pre_tokens if not pt.should_fragment]
-        fragmentable = [pt for pt in all_pre_tokens if pt.should_fragment]
-        
-        self.stats['preserved_tokens'] = len(preserved)
-        self.stats['fragmented_tokens'] = len(fragmentable)
+        # Control vocabulary size (si agregaste _control_vocabulary_size)
+        if hasattr(self, '_control_vocabulary_size'):
+            all_preserved, all_fragmentable = self._control_vocabulary_size(
+                all_preserved, all_fragmentable
+            )
         
         if verbose:
-            print(f"  Preserved tokens: {len(preserved)}")
-            print(f"  Fragmentable tokens: {len(fragmentable)}")
+            print(f"  Pre-tokenization complete:")
+            print(f"    Preserved: {len(all_preserved)}")
+            print(f"    Fragmentable: {len(all_fragmentable)}")
         
-        # Step 2: Add all preserved tokens directly to vocabulary
-        if verbose:
-            print("\n[2/4] Adding preserved tokens to vocabulary...")
-        
-        for pt in preserved:
+        # Add preserved tokens to vocab
+        for pt in all_preserved:
             self.vocab.add(pt.text)
         
-        if verbose:
-            print(f"  Vocab size after preserved: {len(self.vocab)}")
-        
-        # Step 3: Prepare fragmentable tokens for BPE
-        if verbose:
-            print("\n[3/4] Preparing fragmentable tokens for BPE...")
-        
-        # Convert fragmentable tokens to character sequences
-        words = {}
-        for pt in fragmentable:
-            # Split into characters
-            word = tuple(pt.text)
-            words[word] = words.get(word, 0) + 1
-            
-            # Add individual characters to vocab
-            for char in word:
+        # Build character vocabulary from fragmentable
+        for pt in all_fragmentable:
+            for char in pt.text:
                 self.vocab.add(char)
         
-        if verbose:
-            print(f"  Unique fragmentable words: {len(words)}")
-            print(f"  Vocab size with chars: {len(self.vocab)}")
+        # BPE on fragmentable tokens
+        word_freqs = Counter()
+        for pt in all_fragmentable:
+            word = tuple(pt.text)
+            word_freqs[word] += 1
         
-        # Step 4: Learn BPE merges on fragmentable tokens only
-        if verbose:
-            print(f"\n[4/4] Learning BPE merges (target vocab: {self.vocab_size})...")
+        # Initialize working structures
+        words = {word: list(word) for word in word_freqs}
+        num_merges = 0
         
-        num_merges = self.vocab_size - len(self.vocab)
-        merge_count = 0
+        # Learn BPE merges
+        target_merges = max(0, self.vocab_size - len(self.vocab))
         
-        for i in range(num_merges):
-            # Count all pairs in all words
+        for _ in range(target_merges):
+            if not word_freqs:
+                break
+                
             pairs = Counter()
-            for word, freq in words.items():
-                if len(word) < 2:
-                    continue
-                for j in range(len(word) - 1):
-                    pairs[(word[j], word[j+1])] += freq
+            for word, freq in word_freqs.items():
+                word_list = words[word]
+                for i in range(len(word_list) - 1):
+                    pairs[(word_list[i], word_list[i+1])] += freq
             
-            # Stop if no pairs left
             if not pairs:
-                if verbose:
-                    print(f"  No more pairs to merge at iteration {i}")
                 break
             
-            # Get most frequent pair
-            most_common_pair, pair_freq = pairs.most_common(1)[0]
+            # Find best pair
+            best_pair, best_freq = pairs.most_common(1)[0]
             
-            # ✅ FIX: Check min_frequency before merging
-            if pair_freq < self.min_frequency:
-                if verbose:
-                    print(f"  Stopping: pair frequency {pair_freq} < min_frequency {self.min_frequency}")
+            if best_freq < self.min_frequency:
                 break
             
-            # Record the merge
-            self.merges[most_common_pair] = merge_count
-            merge_count += 1
+            # Apply merge
+            for word in words:
+                words[word] = self._merge_pair(words[word], best_pair)
             
-            # Add merged token to vocab
-            merged_token = most_common_pair[0] + most_common_pair[1]
-            self.vocab.add(merged_token)
-            
-            # Update all words by applying this merge
-            new_words = {}
-            for word, word_freq in words.items():
-                new_word = tuple(self._merge_pair(list(word), most_common_pair))
-                new_words[new_word] = word_freq
-            words = new_words
-            
-            # Progress update
-            if verbose and (i + 1) % 100 == 0:
-                print(f"  Merges: {merge_count}, Vocab: {len(self.vocab)}")
+            # Record merge
+            self.merges[best_pair] = num_merges
+            self.vocab.add(best_pair[0] + best_pair[1])
+            num_merges += 1
         
-        # Final statistics
-        self.stats['total_merges'] = merge_count
-        self.stats['training_time'] = time.time() - start_time
+        # CRITICAL FIX: Ensure vocab is never empty
+        if len(self.vocab) == 0:
+            # Emergency fallback: add all characters from corpus
+            for text in corpus:
+                for char in text:
+                    if char.strip():  # Skip pure whitespace
+                        self.vocab.add(char)
+            
+            # Add some basic tokens
+            basic_tokens = ['def', 'return', 'if', 'for', 'class', '(', ')', ':', '=']
+            for token in basic_tokens:
+                self.vocab.add(token)
+        
+        # Store statistics
+        self.stats = {
+            'preserved_tokens': len(all_preserved),
+            'fragmented_tokens': len(all_fragmentable),
+            'total_merges': num_merges,
+            'training_time': time.time() - start_time,
+            'final_vocab_size': len(self.vocab)
+        }
         
         if verbose:
-            print(f"\n✅ Training complete!")
-            print(f"  Final vocab size: {len(self.vocab)}")
-            print(f"  Total merges: {merge_count}")
-            print(f"  Training time: {self.stats['training_time']:.2f}s")
+            print(f"  Training complete:")
+            print(f"    Final vocab size: {len(self.vocab)}")
+            print(f"    Merges learned: {num_merges}")
         
-        return {
-            'vocab_size': len(self.vocab),
-            'preserved': len(preserved),
-            'fragmented': len(fragmentable),
-            'merges': merge_count,
-            'time': self.stats['training_time'],
-        }
+        return self.stats
+        
+
     
     def encode(self, text: str) -> List[str]:
         """

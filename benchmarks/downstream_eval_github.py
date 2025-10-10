@@ -264,30 +264,31 @@ def main():
         rare_op_tests = create_rare_operator_test(corpus)
     
     # Train tokenizers with SMALL vocab (forces tough choices)
-    print("\n[Training] Using SMALL vocab_size=150 (challenging!)")
+    print("\n[Training] Using MEDIUM vocab_size=1000 (balanced!)")
+    vocab_size = 1000  # <-- Agregar esta línea
     
     tokenizers = {}
     
     print("  [1/4] Standard BPE...")
     norm = Normalizer(spacer_mode=SpacerMode.NONE, pre_tokenization=PreTokenizationMode.WHITESPACE)
-    v, m, _ = train_bpe(corpus, vocab_size=150, normalizer=norm, byte_fallback=False, verbose=False)
+    v, m, _ = train_bpe(corpus, vocab_size=vocab_size, normalizer=norm, byte_fallback=False, verbose=False)
     tokenizers['Standard BPE'] = BPEEncoder(v, m, norm)
     print(f"        Vocab: {len(v)}")
     
     print("  [2/4] Entropy-Only...")
-    tok_e = EntropyOnlyBPE(vocab_size=150, min_frequency=1)
+    tok_e = EntropyOnlyBPE(vocab_size=vocab_size, min_frequency=1)
     tok_e.train(corpus, verbose=False)
     tokenizers['Entropy-Only'] = tok_e
     print(f"        Vocab: {len(tok_e.vocab)}")
     
     print("  [3/4] Syntax-Only...")
-    tok_s = SyntaxOnlyBPE(vocab_size=150, min_frequency=1)
+    tok_s = SyntaxOnlyBPE(vocab_size=vocab_size, min_frequency=1)
     tok_s.train(corpus, verbose=False)
     tokenizers['Syntax-Only'] = tok_s
     print(f"        Vocab: {len(tok_s.vocab)}")
     
     print("  [4/4] Hybrid...")
-    tok_h = EntropyAwareBPE(vocab_size=150, min_frequency=1)
+    tok_h = EntropyAwareBPE(vocab_size=vocab_size, min_frequency=1)
     tok_h.train(corpus, verbose=False)
     tokenizers['Hybrid'] = tok_h
     print(f"        Vocab: {len(tok_h.vocab)}")

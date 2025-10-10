@@ -5,9 +5,9 @@
     "semantic_separation": 0.026422325231056476
   },
   "Entropy-Only": {
-    "rare_operators": 0.2535211267605634,
-    "long_identifiers": 0.07692307692307693,
-    "semantic_separation": 0.28881805297778096
+    "rare_operators": 0.0,
+    "long_identifiers": 0.0,
+    "semantic_separation": 0.07602651077922407
   },
   "Syntax-Only": {
     "rare_operators": 0.823943661971831,

@@ -1,46 +1,31 @@
 """
-FIXED BPE Variants with correct pre-tokenization
+BPE Variants for Ablation Studies
+Path: bytepiece/algorithms/bpe_variants.py
 
-Replace the content of bytepiece/algorithms/bpe_variants.py with this
+Three variants:
+1. EntropyOnlyBPE - Only entropy, no syntax rules
+2. SyntaxOnlyBPE - Only syntax rules, no entropy
+3. (Hybrid is in entropy_bpe.py)
 """
 
-from typing import List, Dict
-from collections import Counter
-import time
 import re
+from collections import Counter
+from typing import List, Dict
+import time
 
 from bytepiece.algorithms.entropy import EntropyAnalyzer
 
 
-# ============================================================================
-# SIMPLE PRETOKENIZER (NO syntax awareness)
-# ============================================================================
-
 def simple_whitespace_tokenize(text: str) -> List[str]:
-    """
-    Simple whitespace tokenizer - NO operator/keyword awareness.
-    Used for Entropy-Only to avoid syntax bias.
-    """
-    tokens = []
-    for word in text.split():
-        # Just split on whitespace, keep everything else together
-        tokens.append(word)
-    return tokens
+    """Simple whitespace tokenization for Entropy-Only variant"""
+    return text.split()
 
-
-# ============================================================================
-# SYNTAX-AWARE PRETOKENIZER
-# ============================================================================
 
 def syntax_aware_tokenize(text: str) -> List[str]:
-    """
-    Tokenizer that ONLY separates based on syntax (operators, keywords).
-    Used for Syntax-Only variant.
-    """
-    # Pattern that separates operators and punctuation
+    """Syntax-aware tokenization for Syntax-Only variant"""
     pattern = re.compile(
-        r'<<=|>>=|&=|\|=|\^=|'  # Bitwise assignment (RARE) - check FIRST (longer)
-        r'>=|<=|==|!=|\+=|-=|->|=>|//=|//|<<|>>|\*\*|\|\||&&|'  # Other operators
+        r'<<=|>>=|&=|\|=|\^=|'  # Bitwise assignment
+        r'>=|<=|==|!=|\+=|-=|->|=>|//=|//|<<|>>|\*\*|\|\||&&|'  # Operators
         r'[a-zA-Z_][a-zA-Z0-9_]*|'  # Identifiers
         r'\d+\.?\d*|'  # Numbers
         r'"[^"]*"|'  # Strings
@@ -50,15 +35,11 @@ def syntax_aware_tokenize(text: str) -> List[str]:
     )
     
     tokens = pattern.findall(text)
-    return [t for t in tokens if t.strip()]  # Remove pure whitespace
+    return [t for t in tokens if t.strip()]
 
-
-# ============================================================================
-# VARIANT 1: Entropy-Only BPE
-# ============================================================================
 
 class EntropyOnlyBPE:
-    """BPE with ONLY Shannon entropy (NO syntax rules)"""
+    """BPE with ONLY Shannon entropy (NO syntax rules) - WITH VOCAB CONTROL"""
     
     def __init__(self, vocab_size: int = 5000, min_frequency: int = 2):
         self.vocab_size = vocab_size
@@ -70,48 +51,73 @@ class EntropyOnlyBPE:
         self.stats = {}
     
     def train(self, corpus: List[str], verbose: bool = False) -> Dict:
-        """Train with entropy-only fragmentation"""
+        """Train with entropy-only fragmentation AND vocabulary control"""
         start_time = time.time()
         
         if verbose:
             print("Training Entropy-Only BPE...")
         
-        # Use SIMPLE whitespace tokenization (no syntax awareness)
-        all_words = []
+        # Count ALL tokens first
+        token_counts = Counter()
         for text in corpus:
             words = simple_whitespace_tokenize(text)
-            all_words.extend(words)
+            token_counts.update(words)
         
-        # Decide which words to fragment based ONLY on entropy
-        preserved = []
+        # Sort by frequency and entropy
+        preserved_candidates = []
         fragmentable = []
         
-        for word in all_words:
+        for word, freq in token_counts.items():
+            if not word:
+                continue
+                
             entropy = self.analyzer.shannon_entropy(word)
             
-            # ONLY entropy threshold (no syntax rules)
-            if entropy > 4.0:
+            # Score combines frequency and entropy
+            # High frequency + low entropy = preserve
+            score = freq / (1 + entropy)  # Higher score = more likely to preserve
+            
+            if entropy > 4.0:  # High entropy = fragment
                 fragmentable.append(word)
             else:
-                preserved.append(word)
+                preserved_candidates.append((score, word))
+        
+        # CRITICAL: Limit preserved vocabulary
+        max_preserve = min(
+            len(preserved_candidates),
+            int(self.vocab_size * 0.3)  # Max 30% for preserved tokens
+        )
+        
+        # Sort by score and take top tokens
+        preserved_candidates.sort(reverse=True)
+        preserved = [word for score, word in preserved_candidates[:max_preserve]]
         
         # Add preserved to vocab
-        for word in set(preserved):
+        for word in preserved:
             self.vocab.add(word)
+        
+        if verbose:
+            print(f"  Preserved: {len(preserved)} tokens (limited to {max_preserve})")
+        
+        # Build character vocabulary from fragmentable tokens
+        for word in fragmentable:
+            for char in word:
+                self.vocab.add(char)
         
         # BPE on fragmentable words
         words_dict = {}
         for word in fragmentable:
             word_tuple = tuple(word)
-            words_dict[word_tuple] = words_dict.get(word_tuple, 0) + 1
-            for char in word:
-                self.vocab.add(char)
+            words_dict[word_tuple] = token_counts.get(word, 1)
         
-        # Learn merges
+        # Learn BPE merges
         num_merges = max(0, self.vocab_size - len(self.vocab))
         merge_count = 0
         
         for i in range(num_merges):
+            if not words_dict:
+                break
+                
             pairs = Counter()
             for word, freq in words_dict.items():
                 if len(word) < 2:
@@ -131,7 +137,7 @@ class EntropyOnlyBPE:
             merge_count += 1
             self.vocab.add(best_pair[0] + best_pair[1])
             
-            # Update words
+            # Apply merge
             new_words = {}
             for word, word_freq in words_dict.items():
                 new_word = self._merge_pair(list(word), best_pair)
@@ -141,6 +147,7 @@ class EntropyOnlyBPE:
         self.stats = {
             'training_time': time.time() - start_time,
             'vocab_size': len(self.vocab),
+            'preserved': len(preserved),
             'merges': merge_count,
         }
         
@@ -164,13 +171,10 @@ class EntropyOnlyBPE:
         tokens = []
         
         for word in words:
-            entropy = self.analyzer.shannon_entropy(word)
-            
-            # If low entropy, keep as is
-            if entropy <= 4.0:
+            if word in self.vocab:
                 tokens.append(word)
             else:
-                # Fragment with BPE
+                # Apply BPE merges
                 word_chars = list(word)
                 for pair in sorted(self.merges.keys(), key=lambda p: self.merges[p]):
                     word_chars = self._merge_pair(word_chars, pair)
@@ -178,10 +182,6 @@ class EntropyOnlyBPE:
         
         return tokens
 
-
-# ============================================================================
-# VARIANT 2: Syntax-Only BPE
-# ============================================================================
 
 class SyntaxOnlyBPE:
     """BPE with ONLY syntax rules (NO entropy checks)"""
@@ -208,11 +208,14 @@ class SyntaxOnlyBPE:
             tokens = syntax_aware_tokenize(text)
             all_tokens.extend(tokens)
         
-        # Preserve ONLY based on syntax type (no entropy)
+        # Count frequencies
+        token_counts = Counter(all_tokens)
+        
+        # Preserve ONLY based on syntax type
         preserved = []
         fragmentable = []
         
-        for token in all_tokens:
+        for token, freq in token_counts.items():
             construct_type = self.analyzer.detect_construct_type(token)
             
             # ONLY syntax rules (operators and keywords)
@@ -225,19 +228,25 @@ class SyntaxOnlyBPE:
         for token in set(preserved):
             self.vocab.add(token)
         
+        # Add characters from fragmentable
+        for token in fragmentable:
+            for char in token:
+                self.vocab.add(char)
+        
         # BPE on fragmentable
         words_dict = {}
         for token in fragmentable:
             word_tuple = tuple(token)
             words_dict[word_tuple] = words_dict.get(word_tuple, 0) + 1
-            for char in token:
-                self.vocab.add(char)
         
         # Learn merges
         num_merges = max(0, self.vocab_size - len(self.vocab))
         merge_count = 0
         
         for i in range(num_merges):
+            if not words_dict:
+                break
+                
             pairs = Counter()
             for word, freq in words_dict.items():
                 if len(word) < 2:
@@ -257,6 +266,7 @@ class SyntaxOnlyBPE:
             merge_count += 1
             self.vocab.add(best_pair[0] + best_pair[1])
             
+            # Apply merge
             new_words = {}
             for word, word_freq in words_dict.items():
                 new_word = self._merge_pair(list(word), best_pair)
@@ -266,6 +276,7 @@ class SyntaxOnlyBPE:
         self.stats = {
             'training_time': time.time() - start_time,
             'vocab_size': len(self.vocab),
+            'preserved': len([t for t in preserved if t in self.vocab]),
             'merges': merge_count,
         }
         
@@ -285,20 +296,17 @@ class SyntaxOnlyBPE:
     
     def encode(self, text: str) -> List[str]:
         """Encode with syntax-only logic"""
-        tokens = syntax_aware_tokenize(text)
-        result = []
+        raw_tokens = syntax_aware_tokenize(text)
+        tokens = []
         
-        for token in tokens:
-            construct_type = self.analyzer.detect_construct_type(token)
-            
-            # If operator/keyword, preserve
-            if construct_type in ['operator', 'keyword']:
-                result.append(token)
+        for token in raw_tokens:
+            if token in self.vocab:
+                tokens.append(token)
             else:
-                # Fragment with BPE
-                chars = list(token)
+                # Apply BPE merges
+                word_chars = list(token)
                 for pair in sorted(self.merges.keys(), key=lambda p: self.merges[p]):
-                    chars = self._merge_pair(chars, pair)
-                result.extend(chars)
+                    word_chars = self._merge_pair(word_chars, pair)
+                tokens.extend(word_chars)
         
-        return result
+        return tokens
