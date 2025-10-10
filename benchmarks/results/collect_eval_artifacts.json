@@ -1,0 +1,298 @@
+{
+  "config": {
+    "vocab_size": 1000,
+    "byte_fallback": false,
+    "pre_tokenization": "whitespace",
+    "seed": 42,
+    "train_size": 59288,
+    "test_size": 14823
+  },
+  "operator_distribution": {
+    "<<=": {
+      "train_count": 4,
+      "test_count": 1
+    },
+    ">>=": {
+      "train_count": 2,
+      "test_count": 1
+    },
+    "|=": {
+      "train_count": 35,
+      "test_count": 8
+    },
+    "&=": {
+      "train_count": 13,
+      "test_count": 6
+    },
+    "^=": {
+      "train_count": 5,
+      "test_count": 0
+    },
+    "**": {
+      "train_count": 1194,
+      "test_count": 235
+    }
+  },
+  "tokenizers": {
+    "Standard BPE": {
+      "rare_operators_preserved_ratio": 0.43243243243243246,
+      "long_identifiers_single_token_ratio": 0.0,
+      "long_identifiers_avg_subtokens": 8.840579710144928,
+      "similarity": {
+        "avg_similar_cosine": 0.9819441951020188,
+        "avg_dissimilar_cosine": 0.6642854918492025,
+        "separation": 0.3176587032528163
+      },
+      "fragmentation": {
+        "avg_tokens_per_line": 23.373676043985697,
+        "fragmentation_ratio": 0.6053487234773206,
+        "tokens_per_100_chars": 60.53487234773206
+      },
+      "reconstruction": {
+        "decoder_available": false,
+        "exact_match_ratio": null
+      },
+      "samples": {
+        "result_lshift_eq": [
+          "result",
+          " ",
+          "<",
+          "<",
+          "=",
+          " ",
+          "2"
+        ],
+        "long_identifier_def": [
+          "def",
+          " ",
+          "cal",
+          "c",
+          "ul",
+          "ate_",
+          "to",
+          "t",
+          "al_",
+          "p",
+          "ri",
+          "ce",
+          "_",
+          "with",
+          "_",
+          "dis",
+          "count",
+          "(",
+          "item",
+          "s):",
+          " ",
+          "pass"
+        ],
+        "url_string_line": [
+          " ",
+          " ",
+          " ",
+          " ",
+          " ",
+          " ",
+          " ",
+          " ",
+          "\"\"\"",
+          "S",
+          "end",
+          " ",
+          "a",
+          " ",
+          "command",
+          ",",
+          " ",
+          "and",
+          " ",
+          "return",
+          " ",
+          "its",
+          " ",
+          "response",
+          " ",
+          "code",
+          ".\"\"\""
+        ],
+        "comment_line": [
+          "#",
+          " ",
+          "test",
+          "."
+        ]
+      },
+      "entropy_logging": {
+        "entropy_logged": true,
+        "avg_local_entropy": {
+          "operator": 0.3151515151515151,
+          "identifier": 1.0673287657122938,
+          "string": 0.4403620140776586,
+          "comment": 0.10001095008097304,
+          "other": 0.15052950331818205
+        }
+      }
+    },
+    "Entropy-Only": {
+      "rare_operators_preserved_ratio": 0.0,
+      "long_identifiers_single_token_ratio": 0.0,
+      "long_identifiers_avg_subtokens": 10.44927536231884,
+      "similarity": {
+        "avg_similar_cosine": 0.8628964087498469,
+        "avg_dissimilar_cosine": 0.05896739560584365,
+        "separation": 0.8039290131440032
+      },
+      "fragmentation": {
+        "avg_tokens_per_line": 13.753288807933616,
+        "fragmentation_ratio": 0.3194337402752848,
+        "tokens_per_100_chars": 31.94337402752848
+      },
+      "reconstruction": {
+        "decoder_available": false,
+        "exact_match_ratio": null
+      },
+      "samples": {
+        "result_lshift_eq": [
+          "result",
+          "<",
+          "<",
+          "=",
+          "2"
+        ],
+        "long_identifier_def": [
+          "def",
+          "c",
+          "al",
+          "c",
+          "ul",
+          "ate",
+          "_",
+          "to",
+          "t",
+          "al",
+          "_",
+          "pr",
+          "i",
+          "ce",
+          "_",
+          "with",
+          "_di",
+          "s",
+          "co",
+          "un",
+          "t(",
+          "item",
+          "s",
+          "):",
+          "pass"
+        ],
+        "url_string_line": [
+          "\"",
+          "\"",
+          "\"",
+          "S",
+          "end",
+          "a",
+          "co",
+          "m",
+          "m",
+          "and",
+          ",",
+          "and",
+          "return",
+          "its",
+          "response",
+          "code",
+          ".",
+          "\"",
+          "\"",
+          "\""
+        ],
+        "comment_line": [
+          "#",
+          "te",
+          "st."
+        ]
+      },
+      "entropy_logging": {
+        "entropy_logged": true,
+        "avg_local_entropy": {
+          "operator": 0.48299319727891155,
+          "identifier": 0.862108340512989,
+          "string": 0.28636155635160787,
+          "comment": 0.08520091139202136,
+          "other": 0.639503710982212
+        }
+      }
+    },
+    "Hybrid": {
+      "rare_operators_preserved_ratio": 0.8986486486486487,
+      "long_identifiers_single_token_ratio": 0.0,
+      "long_identifiers_avg_subtokens": 8.376811594202898,
+      "similarity": {
+        "avg_similar_cosine": 0.7899999999999999,
+        "avg_dissimilar_cosine": 0.1367742633351144,
+        "separation": 0.6532257366648855
+      },
+      "fragmentation": {
+        "avg_tokens_per_line": 9.481414018754638,
+        "fragmentation_ratio": 0.23195935037216586,
+        "tokens_per_100_chars": 23.195935037216586
+      },
+      "reconstruction": {
+        "decoder_available": true,
+        "exact_match_ratio": 0.03
+      },
+      "samples": {
+        "result_lshift_eq": [
+          "result",
+          "<<=",
+          "2"
+        ],
+        "long_identifier_def": [
+          "def",
+          "c",
+          "al",
+          "c",
+          "ul",
+          "ate_",
+          "to",
+          "t",
+          "al",
+          "_p",
+          "r",
+          "ic",
+          "e_",
+          "with",
+          "_di",
+          "s",
+          "co",
+          "unt",
+          "(",
+          "items",
+          ")",
+          ":",
+          "pass"
+        ],
+        "url_string_line": [
+          "\"\"",
+          "\"Send a command, and return its response code.\"",
+          "\"\""
+        ],
+        "comment_line": [
+          "# test."
+        ]
+      },
+      "entropy_logging": {
+        "entropy_logged": true,
+        "avg_local_entropy": {
+          "operator": 0.4014621026378991,
+          "identifier": 1.4595134693057954,
+          "string": 1.4429874520209114,
+          "comment": 1.373608509299412,
+          "other": 0.44325321316578054
+        }
+      }
+    }
+  }
+}
