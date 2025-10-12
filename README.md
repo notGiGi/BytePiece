@@ -1,4 +1,4 @@
-﻿# BytePiece 🔡
+﻿# BytePiece 
 
 > Educational, production-grade BPE tokenizer in pure Python
 ---
@@ -132,7 +132,7 @@ assert encoder1.vocab.tokens == encoder2.vocab.tokens
 
 ---
 
-## 📚 Examples
+##  Examples
 
 See [`examples/`](examples/) directory:
 
