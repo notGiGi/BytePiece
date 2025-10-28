@@ -245,14 +245,25 @@ def main():
     
     try:
         print(f"  Training with vocab_size={vocab_size}...")
-        encoder = bytepiece.train_bpe(
-            corpus_path=str(corpus_path),
+        
+        # Read corpus into list of texts
+        with open(corpus_path, 'r', encoding='utf-8') as f:
+            texts = [line.strip() for line in f if line.strip()]
+        
+        print(f"  Loaded {len(texts)} lines from corpus")
+        
+        # Train using texts= parameter (not corpus_path=)
+        vocab, merge_rules, normalizer = bytepiece.train_bpe(
+            texts=texts,
             vocab_size=vocab_size,
+            byte_fallback=True,
             verbose=False,
         )
+        
+        # Create encoder from components
+        encoder = bytepiece.BPEEncoder(vocab, merge_rules, normalizer)
+        
         print(f"  ✓ Training complete")
-        print(f"  ✓ Final vocabulary size: {len(encoder.vocab.tokens)} tokens")
-        print(f"  ✓ Number of merges: {len(encoder.merge_rules.merges)}")
         print()
     except Exception as e:
         print(f"  ✗ Error during training: {e}")
