@@ -1,0 +1,314 @@
+{
+  "experiment": "language_imbalance_v2",
+  "bytepiece_version": "0.2.0",
+  "languages": [
+    "English",
+    "Spanish",
+    "French",
+    "German",
+    "Portuguese",
+    "Italian",
+    "Russian",
+    "Arabic",
+    "Chinese",
+    "Hindi"
+  ],
+  "vocab_sizes": [
+    1000,
+    5000,
+    10000
+  ],
+  "results_by_vocab_size": [
+    {
+      "vocab_size": 1000,
+      "train_time": 12.669258832931519,
+      "results": {
+        "English": {
+          "fertility": 3.002962962962963,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 4054.0,
+          "num_words": 1350.0
+        },
+        "Spanish": {
+          "fertility": 2.90482485128883,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 4395.0,
+          "num_words": 1513.0
+        },
+        "French": {
+          "fertility": 3.0571608040201004,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 4867.0,
+          "num_words": 1592.0
+        },
+        "German": {
+          "fertility": 3.705964912280702,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 5281.0,
+          "num_words": 1425.0
+        },
+        "Portuguese": {
+          "fertility": 3.076812634601579,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 4286.0,
+          "num_words": 1393.0
+        },
+        "Italian": {
+          "fertility": 3.075862068965517,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 4460.0,
+          "num_words": 1450.0
+        },
+        "Russian": {
+          "fertility": 4.972794723825227,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 6032.0,
+          "num_words": 1213.0
+        },
+        "Arabic": {
+          "fertility": 4.0528455284552845,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 4985.0,
+          "num_words": 1230.0
+        },
+        "Chinese": {
+          "fertility": 51.83168316831683,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 5235.0,
+          "num_words": 101.0
+        },
+        "Hindi": {
+          "fertility": 3.7220506485484868,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 6026.0,
+          "num_words": 1619.0
+        }
+      },
+      "summary": {
+        "gini": 0.5535495095955545,
+        "cv": 1.7397417228410987,
+        "max_min_ratio": 17.84330753894502,
+        "max_median_ratio": 15.28332097287825,
+        "mean": 8.340296230326553,
+        "std": 14.509961332753438,
+        "median": 3.3913887734411405,
+        "min": 2.90482485128883,
+        "max": 51.83168316831683
+      }
+    },
+    {
+      "vocab_size": 5000,
+      "train_time": 33.95765662193298,
+      "results": {
+        "English": {
+          "fertility": 2.1,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2835.0,
+          "num_words": 1350.0
+        },
+        "Spanish": {
+          "fertility": 1.7395902181097158,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2632.0,
+          "num_words": 1513.0
+        },
+        "French": {
+          "fertility": 1.9522613065326633,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3108.0,
+          "num_words": 1592.0
+        },
+        "German": {
+          "fertility": 2.5277192982456143,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3602.0,
+          "num_words": 1425.0
+        },
+        "Portuguese": {
+          "fertility": 1.814070351758794,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2527.0,
+          "num_words": 1393.0
+        },
+        "Italian": {
+          "fertility": 2.0744827586206895,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3008.0,
+          "num_words": 1450.0
+        },
+        "Russian": {
+          "fertility": 3.12118713932399,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3786.0,
+          "num_words": 1213.0
+        },
+        "Arabic": {
+          "fertility": 2.56260162601626,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3152.0,
+          "num_words": 1230.0
+        },
+        "Chinese": {
+          "fertility": 31.26732673267327,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3158.0,
+          "num_words": 101.0
+        },
+        "Hindi": {
+          "fertility": 2.2890673255095737,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3706.0,
+          "num_words": 1619.0
+        }
+      },
+      "summary": {
+        "gini": 0.5432636024487627,
+        "cv": 1.694179062514496,
+        "max_min_ratio": 17.973960997923502,
+        "max_median_ratio": 14.247822789568675,
+        "mean": 5.1448306756790565,
+        "std": 8.716264410917764,
+        "median": 2.194533662754787,
+        "min": 1.7395902181097158,
+        "max": 31.26732673267327
+      }
+    },
+    {
+      "vocab_size": 10000,
+      "train_time": 84.4130802154541,
+      "results": {
+        "English": {
+          "fertility": 2.0096296296296297,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2713.0,
+          "num_words": 1350.0
+        },
+        "Spanish": {
+          "fertility": 1.7151354923992068,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2595.0,
+          "num_words": 1513.0
+        },
+        "French": {
+          "fertility": 1.8831658291457287,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2998.0,
+          "num_words": 1592.0
+        },
+        "German": {
+          "fertility": 2.4771929824561405,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3530.0,
+          "num_words": 1425.0
+        },
+        "Portuguese": {
+          "fertility": 1.7688442211055277,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2464.0,
+          "num_words": 1393.0
+        },
+        "Italian": {
+          "fertility": 1.9917241379310344,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 2888.0,
+          "num_words": 1450.0
+        },
+        "Russian": {
+          "fertility": 3.0288540807914264,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3674.0,
+          "num_words": 1213.0
+        },
+        "Arabic": {
+          "fertility": 2.561788617886179,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3151.0,
+          "num_words": 1230.0
+        },
+        "Chinese": {
+          "fertility": 29.831683168316832,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3013.0,
+          "num_words": 101.0
+        },
+        "Hindi": {
+          "fertility": 2.288449660284126,
+          "fallback_rate": 1.0,
+          "char_coverage": 0.0,
+          "avg_token_length": 0.0,
+          "num_tokens": 3705.0,
+          "num_words": 1619.0
+        }
+      },
+      "summary": {
+        "gini": 0.5387739489002259,
+        "cv": 1.6750728942735096,
+        "max_min_ratio": 17.393193307770083,
+        "max_median_ratio": 13.881401973352348,
+        "mean": 4.9556467819945835,
+        "std": 8.301069598112871,
+        "median": 2.149039644956878,
+        "min": 1.7151354923992068,
+        "max": 29.831683168316832
+      }
+    }
+  ]
+}

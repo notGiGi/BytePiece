@@ -1,6 +1,6 @@
 {
   "experiment": "language_imbalance",
-  "date": "2025-10-27T18:14:47.283658",
+  "date": "2025-10-28T17:04:07.834970",
   "bytepiece_version": "0.2.0",
   "config": {
     "vocab_size": 500,

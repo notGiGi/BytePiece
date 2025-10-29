@@ -1,0 +1,62 @@
+{
+  "English": {
+    "file": "english.txt",
+    "num_samples": 384,
+    "num_chars": 34337,
+    "num_words": 5274
+  },
+  "Spanish": {
+    "file": "spanish.txt",
+    "num_samples": 384,
+    "num_chars": 39477,
+    "num_words": 5991
+  },
+  "French": {
+    "file": "french.txt",
+    "num_samples": 384,
+    "num_chars": 42810,
+    "num_words": 6456
+  },
+  "German": {
+    "file": "german.txt",
+    "num_samples": 384,
+    "num_chars": 41984,
+    "num_words": 5711
+  },
+  "Portuguese": {
+    "file": "portuguese.txt",
+    "num_samples": 384,
+    "num_chars": 37390,
+    "num_words": 5759
+  },
+  "Italian": {
+    "file": "italian.txt",
+    "num_samples": 384,
+    "num_chars": 39571,
+    "num_words": 5862
+  },
+  "Russian": {
+    "file": "russian.txt",
+    "num_samples": 384,
+    "num_chars": 35937,
+    "num_words": 4835
+  },
+  "Arabic": {
+    "file": "arabic.txt",
+    "num_samples": 384,
+    "num_chars": 28171,
+    "num_words": 4898
+  },
+  "Chinese": {
+    "file": "chinese.txt",
+    "num_samples": 384,
+    "num_chars": 9609,
+    "num_words": 395
+  },
+  "Hindi": {
+    "file": "hindi.txt",
+    "num_samples": 384,
+    "num_chars": 33413,
+    "num_words": 6445
+  }
+}
