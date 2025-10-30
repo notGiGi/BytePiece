@@ -1,6 +1,7 @@
 ﻿__version__ = "0.2.0"  
 
 from bytepiece.algorithms.bpe import BPEEncoder, train_bpe
+from bytepiece.algorithms.fair_bpe import FairBPE, train_fair_bpe
 from bytepiece.core.io import get_model_info, load_model, save_model
 from bytepiece.core.normalizer import (
     Normalizer,
@@ -14,6 +15,8 @@ from bytepiece.core.code_pretokenizer import CodePreTokenizer, code_pretokenize 
 __all__ = [
     # Main API
     "train_bpe",
+    "train_fair_bpe",
+    "FairBPE",
     "BPEEncoder",
     # I/O
     "save_model",
