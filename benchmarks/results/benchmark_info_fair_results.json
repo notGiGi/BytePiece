@@ -1,0 +1,247 @@
+[
+  {
+    "algorithm": "standard",
+    "lambda": 0.0,
+    "vocab_size": 1000,
+    "training_time": 0.7711669001728296,
+    "metrics_by_lang": {
+      "English": {
+        "fertility": 0.5,
+        "compression": 0.12556504269211452,
+        "char_entropy": 3.91904898171904,
+        "info_per_token": 7.83809796343808,
+        "total_tokens": 500,
+        "total_words": 1000
+      },
+      "German": {
+        "fertility": 0.5,
+        "compression": 0.09061254077564335,
+        "char_entropy": 3.991809505968151,
+        "info_per_token": 7.983619011936302,
+        "total_tokens": 500,
+        "total_words": 1000
+      },
+      "Spanish": {
+        "fertility": 0.5,
+        "compression": 0.11123470522803114,
+        "char_entropy": 3.8495948928002734,
+        "info_per_token": 7.699189785600547,
+        "total_tokens": 500,
+        "total_words": 1000
+      },
+      "Turkish": {
+        "fertility": 0.541,
+        "compression": 0.08295001533272002,
+        "char_entropy": 3.8737747390308104,
+        "info_per_token": 7.160396929816654,
+        "total_tokens": 541,
+        "total_words": 1000
+      }
+    },
+    "fairness": {
+      "fertility_gap": 0.041000000000000036,
+      "fertility_gini": 0.015066144047035657,
+      "fertility_variance": 0.0003151875000000006,
+      "info_gap": 0.8232220821196474,
+      "info_gini": 0.02125540728716957,
+      "info_variance": 0.09679017944530251,
+      "cost_index": 2041
+    }
+  },
+  {
+    "algorithm": "info_theoretic",
+    "lambda": 0.1,
+    "vocab_size": 1000,
+    "training_time": 2.0322126001119614,
+    "metrics_by_lang": {
+      "English": {
+        "fertility": 0.504,
+        "compression": 0.12656956303365144,
+        "char_entropy": 3.91904898171904,
+        "info_per_token": 7.775890836744127,
+        "total_tokens": 504,
+        "total_words": 1000
+      },
+      "German": {
+        "fertility": 0.523,
+        "compression": 0.09478071765132294,
+        "char_entropy": 3.991809505968151,
+        "info_per_token": 7.632522955962047,
+        "total_tokens": 523,
+        "total_words": 1000
+      },
+      "Spanish": {
+        "fertility": 0.501,
+        "compression": 0.11145717463848721,
+        "char_entropy": 3.8495948928002734,
+        "info_per_token": 7.683822141317911,
+        "total_tokens": 501,
+        "total_words": 1000
+      },
+      "Turkish": {
+        "fertility": 0.513,
+        "compression": 0.07865685372585096,
+        "char_entropy": 3.8737747390308104,
+        "info_per_token": 7.551217814874874,
+        "total_tokens": 513,
+        "total_words": 1000
+      }
+    },
+    "fairness": {
+      "fertility_gap": 0.02200000000000002,
+      "fertility_gini": 0.009186673199412132,
+      "fertility_variance": 7.368750000000014e-05,
+      "info_gap": 0.2246730218692532,
+      "info_gini": 0.005917399658236011,
+      "info_variance": 0.006645937528130249,
+      "cost_index": 2041
+    }
+  },
+  {
+    "algorithm": "info_theoretic",
+    "lambda": 0.3,
+    "vocab_size": 1000,
+    "training_time": 2.0017357002943754,
+    "metrics_by_lang": {
+      "English": {
+        "fertility": 0.504,
+        "compression": 0.12656956303365144,
+        "char_entropy": 3.91904898171904,
+        "info_per_token": 7.775890836744127,
+        "total_tokens": 504,
+        "total_words": 1000
+      },
+      "German": {
+        "fertility": 0.523,
+        "compression": 0.09478071765132294,
+        "char_entropy": 3.991809505968151,
+        "info_per_token": 7.632522955962047,
+        "total_tokens": 523,
+        "total_words": 1000
+      },
+      "Spanish": {
+        "fertility": 0.501,
+        "compression": 0.11145717463848721,
+        "char_entropy": 3.8495948928002734,
+        "info_per_token": 7.683822141317911,
+        "total_tokens": 501,
+        "total_words": 1000
+      },
+      "Turkish": {
+        "fertility": 0.513,
+        "compression": 0.07865685372585096,
+        "char_entropy": 3.8737747390308104,
+        "info_per_token": 7.551217814874874,
+        "total_tokens": 513,
+        "total_words": 1000
+      }
+    },
+    "fairness": {
+      "fertility_gap": 0.02200000000000002,
+      "fertility_gini": 0.009186673199412132,
+      "fertility_variance": 7.368750000000014e-05,
+      "info_gap": 0.2246730218692532,
+      "info_gini": 0.005917399658236011,
+      "info_variance": 0.006645937528130249,
+      "cost_index": 2041
+    }
+  },
+  {
+    "algorithm": "info_theoretic",
+    "lambda": 0.5,
+    "vocab_size": 1000,
+    "training_time": 2.224967999383807,
+    "metrics_by_lang": {
+      "English": {
+        "fertility": 0.504,
+        "compression": 0.12656956303365144,
+        "char_entropy": 3.91904898171904,
+        "info_per_token": 7.775890836744127,
+        "total_tokens": 504,
+        "total_words": 1000
+      },
+      "German": {
+        "fertility": 0.523,
+        "compression": 0.09478071765132294,
+        "char_entropy": 3.991809505968151,
+        "info_per_token": 7.632522955962047,
+        "total_tokens": 523,
+        "total_words": 1000
+      },
+      "Spanish": {
+        "fertility": 0.501,
+        "compression": 0.11145717463848721,
+        "char_entropy": 3.8495948928002734,
+        "info_per_token": 7.683822141317911,
+        "total_tokens": 501,
+        "total_words": 1000
+      },
+      "Turkish": {
+        "fertility": 0.513,
+        "compression": 0.07865685372585096,
+        "char_entropy": 3.8737747390308104,
+        "info_per_token": 7.551217814874874,
+        "total_tokens": 513,
+        "total_words": 1000
+      }
+    },
+    "fairness": {
+      "fertility_gap": 0.02200000000000002,
+      "fertility_gini": 0.009186673199412132,
+      "fertility_variance": 7.368750000000014e-05,
+      "info_gap": 0.2246730218692532,
+      "info_gini": 0.005917399658236011,
+      "info_variance": 0.006645937528130249,
+      "cost_index": 2041
+    }
+  },
+  {
+    "algorithm": "info_theoretic",
+    "lambda": 0.7,
+    "vocab_size": 1000,
+    "training_time": 2.707386000081897,
+    "metrics_by_lang": {
+      "English": {
+        "fertility": 0.504,
+        "compression": 0.12656956303365144,
+        "char_entropy": 3.91904898171904,
+        "info_per_token": 7.775890836744127,
+        "total_tokens": 504,
+        "total_words": 1000
+      },
+      "German": {
+        "fertility": 0.523,
+        "compression": 0.09478071765132294,
+        "char_entropy": 3.991809505968151,
+        "info_per_token": 7.632522955962047,
+        "total_tokens": 523,
+        "total_words": 1000
+      },
+      "Spanish": {
+        "fertility": 0.501,
+        "compression": 0.11145717463848721,
+        "char_entropy": 3.8495948928002734,
+        "info_per_token": 7.683822141317911,
+        "total_tokens": 501,
+        "total_words": 1000
+      },
+      "Turkish": {
+        "fertility": 0.513,
+        "compression": 0.07865685372585096,
+        "char_entropy": 3.8737747390308104,
+        "info_per_token": 7.551217814874874,
+        "total_tokens": 513,
+        "total_words": 1000
+      }
+    },
+    "fairness": {
+      "fertility_gap": 0.02200000000000002,
+      "fertility_gini": 0.009186673199412132,
+      "fertility_variance": 7.368750000000014e-05,
+      "info_gap": 0.2246730218692532,
+      "info_gini": 0.005917399658236011,
+      "info_variance": 0.006645937528130249,
+      "cost_index": 2041
+    }
+  }
+]
