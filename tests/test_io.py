@@ -22,6 +22,7 @@ def trained_model(tmp_path):
         corpus_path=str(corpus),
         vocab_size=100,
         seed=42,
+        return_encoder=True,
     )
     
     return encoder
@@ -225,8 +226,8 @@ class TestModelHash:
         corpus.write_text("hello world python")
         
         # Train two models with different vocab sizes
-        model1 = train_bpe(str(corpus), vocab_size=50, seed=42)
-        model2 = train_bpe(str(corpus), vocab_size=100, seed=42)
+        model1 = train_bpe(str(corpus), vocab_size=50, seed=42, return_encoder=True)
+        model2 = train_bpe(str(corpus), vocab_size=100, seed=42, return_encoder=True)
         
         path1 = tmp_path / "model1.json"
         path2 = tmp_path / "model2.json"

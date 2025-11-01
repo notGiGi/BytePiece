@@ -4,9 +4,14 @@ import tempfile
 import os
 
 import bytepiece
-from bytepiece.algorithms.bpe import BPEEncoder, train_bpe
+from bytepiece.algorithms.bpe import BPEEncoder, train_bpe as _train_bpe
 from bytepiece.core.normalizer import Normalizer, NormalizationMode
 from bytepiece.core.vocab import SpecialTokens
+
+
+def train_bpe(*args, **kwargs):
+    kwargs.setdefault("return_encoder", True)
+    return _train_bpe(*args, **kwargs)
 
 
 @pytest.fixture
@@ -92,7 +97,8 @@ class TestBPEEncoding:
         
         
         normalized_text = encoder.normalizer.normalize(text)
-        assert decoded == normalized_text
+        expected_text = encoder.normalizer.denormalize(normalized_text)
+        assert decoded == expected_text
     
     def test_encode_returns_tokens(self, simple_corpus):
         """Encode returns list of token strings."""
@@ -140,7 +146,8 @@ class TestByteFallback:
         assert len(tokens) > 0
         
         normalized = encoder.normalizer.normalize(text)
-        assert decoded == normalized
+        expected = encoder.normalizer.denormalize(normalized)
+        assert decoded == expected
     
     def test_byte_fallback_coverage(self, simple_corpus):
         """Byte-fallback ensures 100% coverage."""
@@ -161,7 +168,8 @@ class TestByteFallback:
             # Should always encode/decode
             assert len(tokens) > 0
             normalized = encoder.normalizer.normalize(text)
-            assert decoded == normalized
+            expected = encoder.normalizer.denormalize(normalized)
+            assert decoded == expected
 
 
 class TestSpecialTokens:

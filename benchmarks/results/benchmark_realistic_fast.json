@@ -1,0 +1,165 @@
+{
+  "results": [
+    {
+      "algorithm": "standard",
+      "lambda": 0.0,
+      "vocab_size": 2000,
+      "training_time": 42.496816699393094,
+      "memory_mb": 56.81640625,
+      "metrics_by_lang": {
+        "English": {
+          "fertility": 1.1278417938336966,
+          "char_entropy": 4.0263021802560255,
+          "info_per_token": 3.5699175205859723,
+          "total_tokens": 7243,
+          "total_words": 6422
+        },
+        "German": {
+          "fertility": 0.9498470948012232,
+          "char_entropy": 4.225420345391916,
+          "info_per_token": 4.448526892927098,
+          "total_tokens": 6212,
+          "total_words": 6540
+        },
+        "Turkish": {
+          "fertility": 1.3518120393120394,
+          "char_entropy": 4.104449788782538,
+          "info_per_token": 3.036257755827773,
+          "total_tokens": 8803,
+          "total_words": 6512
+        },
+        "Finnish": {
+          "fertility": 1.2734145965128838,
+          "char_entropy": 3.8236815216977873,
+          "info_per_token": 3.0026996173662135,
+          "total_tokens": 8253,
+          "total_words": 6481
+        },
+        "Russian": {
+          "fertility": 1.073238566131026,
+          "char_entropy": 4.110453711990928,
+          "info_per_token": 3.829953415491691,
+          "total_tokens": 6946,
+          "total_words": 6472
+        },
+        "Chinese": {
+          "fertility": 2.4179959733622427,
+          "char_entropy": 3.950357626390671,
+          "info_per_token": 1.6337320946393747,
+          "total_tokens": 15613,
+          "total_words": 6457
+        }
+      },
+      "fairness": {
+        "fertility_gap": 1.4681488785610195,
+        "info_gap": 2.814794798287723,
+        "fertility_mean": 1.365691677325519,
+        "info_mean": 3.2535145494730204,
+        "cost_index": 53070
+      },
+      "language_stats": null
+    },
+    {
+      "algorithm": "info_theoretic",
+      "lambda": 0.3,
+      "vocab_size": 2000,
+      "training_time": 127.19291459955275,
+      "memory_mb": 0.01171875,
+      "metrics_by_lang": {
+        "English": {
+          "fertility": 0.8066023045780131,
+          "char_entropy": 4.0263021802560255,
+          "info_per_token": 4.991681969421659,
+          "total_tokens": 5180,
+          "total_words": 6422
+        },
+        "German": {
+          "fertility": 0.8215596330275229,
+          "char_entropy": 4.225420345391916,
+          "info_per_token": 5.143169376300601,
+          "total_tokens": 5373,
+          "total_words": 6540
+        },
+        "Turkish": {
+          "fertility": 1.1062653562653562,
+          "char_entropy": 4.104449788782538,
+          "info_per_token": 3.7101855947462368,
+          "total_tokens": 7204,
+          "total_words": 6512
+        },
+        "Finnish": {
+          "fertility": 0.9105076377102299,
+          "char_entropy": 3.8236815216977873,
+          "info_per_token": 4.199505158807551,
+          "total_tokens": 5901,
+          "total_words": 6481
+        },
+        "Russian": {
+          "fertility": 0.8580037082818294,
+          "char_entropy": 4.110453711990928,
+          "info_per_token": 4.790717886548764,
+          "total_tokens": 5553,
+          "total_words": 6472
+        },
+        "Chinese": {
+          "fertility": 0.7757472510453771,
+          "char_entropy": 3.950357626390671,
+          "info_per_token": 5.092325652546329,
+          "total_tokens": 5009,
+          "total_words": 6457
+        }
+      },
+      "fairness": {
+        "fertility_gap": 0.33051810521997904,
+        "info_gap": 1.432983781554364,
+        "fertility_mean": 0.8797809818180548,
+        "info_mean": 4.65459760639519,
+        "cost_index": 34220
+      },
+      "language_stats": {
+        "English": {
+          "total_tokens": 5180,
+          "total_words": 1000,
+          "fertility": 5.18,
+          "char_entropy": 4.023221708353785,
+          "info_per_token": 0.7766837274814257
+        },
+        "German": {
+          "total_tokens": 5373,
+          "total_words": 1000,
+          "fertility": 5.373,
+          "char_entropy": 4.238529390266647,
+          "info_per_token": 0.7888571357280192
+        },
+        "Turkish": {
+          "total_tokens": 7204,
+          "total_words": 1000,
+          "fertility": 7.204,
+          "char_entropy": 4.138045031204266,
+          "info_per_token": 0.5744093602449009
+        },
+        "Finnish": {
+          "total_tokens": 5901,
+          "total_words": 1000,
+          "fertility": 5.901,
+          "char_entropy": 3.8884753122127016,
+          "info_per_token": 0.6589519254724118
+        },
+        "Russian": {
+          "total_tokens": 5553,
+          "total_words": 1000,
+          "fertility": 5.553,
+          "char_entropy": 4.13193270873504,
+          "info_per_token": 0.7440901690500703
+        },
+        "Chinese": {
+          "total_tokens": 5009,
+          "total_words": 1000,
+          "fertility": 5.009,
+          "char_entropy": 3.95997296884736,
+          "info_per_token": 0.7905715649525574
+        }
+      }
+    }
+  ]
+}

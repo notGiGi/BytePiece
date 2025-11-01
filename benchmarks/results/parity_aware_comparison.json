@@ -1,0 +1,76 @@
+{
+  "baseline": {
+    "algorithm": "baseline",
+    "vocab_size": 2000,
+    "training_time": 9.570799300447106,
+    "stats": {
+      "per_language": {
+        "English": {
+          "fertility": 0.8301920985864444,
+          "total_tokens": 4581,
+          "total_words": 5518,
+          "compression_rate": 0.17696140920152972
+        },
+        "German": {
+          "fertility": 0.7666545981173063,
+          "total_tokens": 4235,
+          "total_words": 5524,
+          "compression_rate": 0.13791194477009247
+        },
+        "Turkish": {
+          "fertility": 0.872661217075386,
+          "total_tokens": 4804,
+          "total_words": 5505,
+          "compression_rate": 0.1405623665037891
+        },
+        "Finnish": {
+          "fertility": 0.856159420289855,
+          "total_tokens": 4726,
+          "total_words": 5520,
+          "compression_rate": 0.1364082433758587
+        }
+      },
+      "gini_coefficient": 0.02585850778381804,
+      "fertility_gap": 0.10600661895807972,
+      "fertility_mean": 0.831416833517248,
+      "total_cost": 18346
+    }
+  },
+  "parity_aware": {
+    "algorithm": "parity_aware",
+    "vocab_size": 2000,
+    "training_time": 53.936446900479496,
+    "stats": {
+      "per_language": {
+        "English": {
+          "fertility": 0.6092787241754258,
+          "total_tokens": 3362,
+          "total_words": 5518,
+          "compression_rate": 0.12987213659365704
+        },
+        "German": {
+          "fertility": 0.6316075307748009,
+          "total_tokens": 3489,
+          "total_words": 5524,
+          "compression_rate": 0.11361860101602188
+        },
+        "Turkish": {
+          "fertility": 0.6995458673932788,
+          "total_tokens": 3851,
+          "total_words": 5505,
+          "compression_rate": 0.11267811686221728
+        },
+        "Finnish": {
+          "fertility": 0.6976449275362319,
+          "total_tokens": 3851,
+          "total_words": 5520,
+          "compression_rate": 0.11115280263233851
+        }
+      },
+      "gini_coefficient": 0.03192086698437668,
+      "fertility_gap": 0.09026714321785301,
+      "fertility_mean": 0.6595192624699344,
+      "total_cost": 14553
+    }
+  }
+}

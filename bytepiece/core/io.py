@@ -45,7 +45,7 @@ def save_model(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(model_dict, f, indent=2, ensure_ascii=False)
+        json.dump(model_dict, f, indent=2, ensure_ascii=True)
 
 
 def load_model(path: str) -> BPEEncoder:
